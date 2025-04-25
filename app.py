@@ -1,7 +1,7 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from hippius import Hippius
+from hippius.hippius import Hippius
 import os
 
 app = Flask(__name__)
