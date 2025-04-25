@@ -1,4 +1,4 @@
 Flask
 flask-cors
 gunicorn
-hippius
+git+https://github.com/hippius/storage-python.git
