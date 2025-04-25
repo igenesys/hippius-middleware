@@ -1,4 +1,4 @@
 Flask
 flask-cors
 gunicorn
-git+https://github.com/igenesys/hippius-sdk.git
+hippius
