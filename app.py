@@ -10,8 +10,10 @@ CORS(app)
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
-        if 'file' not in request.files or 'mnemonic' not in request.form:
-            return jsonify({'error': 'Missing file or mnemonic'}), 400
+        if 'file' not in request.files:
+            return jsonify({'error': 'Missing file in request'}), 400
+        if 'mnemonic' not in request.form:
+            return jsonify({'error': 'Missing mnemonic in form data'}), 400
 
         file = request.files['file']
         mnemonic = request.form['mnemonic']
