@@ -1,6 +1,5 @@
 
-import requests
-import json
+import subprocess
 import os
 
 class Hippius:
@@ -9,15 +8,19 @@ class Hippius:
         
     def upload(self, file_path):
         try:
-            # For testing/development, return a mock CID
-            return "QmTestCID" + os.path.basename(file_path)
+            if not os.path.exists(file_path):
+                raise Exception(f"File not found: {file_path}")
+                
+            # Run the hippius CLI command
+            result = subprocess.run(['hippius', 'upload', file_path], 
+                                 env={'HIPPIUS_MNEMONIC': self.mnemonic},
+                                 capture_output=True,
+                                 text=True)
             
-            # TODO: Implement actual file upload logic once API details are available
-            # with open(file_path, 'rb') as file:
-            #     files = {'file': file}
-            #     headers = {'Authorization': self.mnemonic}
-            #     response = requests.post(upload_url, files=files, headers=headers)
-            #     return response.json()['cid']
+            if result.returncode != 0:
+                raise Exception(f"Upload failed: {result.stderr}")
+                
+            return result.stdout.strip()
                 
         except Exception as e:
             raise Exception(f"Upload error: {str(e)}")
