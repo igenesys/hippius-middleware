@@ -1,30 +1,23 @@
 
-import requests
+import subprocess
 import json
 
 class Hippius:
     def __init__(self, mnemonic):
         self.mnemonic = mnemonic
-        self.api_url = "https://api.hippius.io/v1/upload"  # Replace with actual API endpoint
 
     def upload(self, file_path):
         try:
-            with open(file_path, 'rb') as file:
-                files = {'file': file}
-                headers = {
-                    'Authorization': f'Bearer {self.mnemonic}'
-                }
+            # Execute hippius CLI command with the mnemonic
+            cmd = ['hippius', '--mnemonic', self.mnemonic, 'upload', file_path]
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            
+            if result.returncode == 0:
+                # Parse the CID from the CLI output
+                # Assuming the CLI returns JSON or a parseable format
+                return result.stdout.strip()
+            else:
+                raise Exception(f"Upload failed: {result.stderr}")
                 
-                response = requests.post(
-                    self.api_url,
-                    files=files,
-                    headers=headers
-                )
-                
-                if response.status_code == 200:
-                    return response.json().get('cid')
-                else:
-                    raise Exception(f"Upload failed: {response.text}")
-                    
         except Exception as e:
             raise Exception(f"Upload error: {str(e)}")
