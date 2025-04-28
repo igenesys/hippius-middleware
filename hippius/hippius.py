@@ -12,7 +12,8 @@ class Hippius:
                 raise Exception(f"File not found: {file_path}")
                 
             # Run the hippius CLI command
-            result = subprocess.run(['hippius', 'upload', file_path], 
+            hippius_path = os.path.expanduser('~/.local/bin/hippius')
+            result = subprocess.run([hippius_path, 'upload', file_path], 
                                  env={'HIPPIUS_MNEMONIC': self.mnemonic},
                                  capture_output=True,
                                  text=True)
