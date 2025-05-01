@@ -1,5 +1,6 @@
 
-from hippius import HippiusClient
+from hippius.client import Client as HippiusClient
+import os
 
 class Hippius:
     def __init__(self, mnemonic):
